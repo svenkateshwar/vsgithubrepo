@@ -12,5 +12,5 @@
                 content: "{{ motd_value }}"
                 dest: /etc/motd
         - debug:
-                msg: "motd value is {{ motd_value }}"
+                msg: "MOTD Value is updated ...  value is {{ motd_value }}"
 
