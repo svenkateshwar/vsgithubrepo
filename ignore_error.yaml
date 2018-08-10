@@ -1,0 +1,27 @@
+--- 
+
+- hosts: client
+  become: yes
+  remote_user: ansible
+  vars:
+        web: http
+        conn: telnet
+  tasks:
+        - name: Install apache
+          yum:
+                name: "{{ web }}"
+                state: latest
+          ignore_errors: yes
+        - name: Create user
+          user:
+                name: helloworld
+                state: absent
+          notify: proceed_buddy
+        - name: Install telnet
+          yum:
+                name: "{{ conn }}"
+                state: latest
+
+  handlers:
+        - name: proceed_buddy
+          command: cat /etc/passwd

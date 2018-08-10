@@ -1,0 +1,43 @@
+---
+
+- hosts: client
+  vars: 
+        web: http
+        web_corrected: httpd
+        conn: telnet
+        db: mariadb
+  remote_user: ansible
+  become: yes
+
+  tasks:
+        - block:
+                - name: Inside BLOCK - setup apache HTTPD
+                  yum:
+                        name: "{{ web }}"
+                        state: latest
+                - name: Starting HTTP Service
+                  service:
+                        name: "{{ web }}"
+                        state: started
+
+          rescue:
+                - name: Inside RESCUE Block - install telnet
+                  yum:
+                        name: "{{ conn }}"
+                        state: latest
+                - name: Inside RESCUE - Continue with correct HTTPD Package
+                  yum:      
+                        name: "{{ web_corrected }}"
+                        state: latest
+                - name: Starting Correct webservice
+                  service:
+                        name: "{{ web_corrected}}"
+                        state: restarted
+                        
+
+          always:
+                - name: Inside ALWAYS Section -setup mariaDB
+                  yum:
+                        name: "{{ db }}"
+                        state: latest
+        

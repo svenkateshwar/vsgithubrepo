@@ -1,0 +1,42 @@
+--- # My first yaml file
+
+ - hosts: client
+   remote_user: ansible
+   become: yes
+   tasks:
+        - name: First task - Removing apache
+          yum: 
+                name: httpd
+                state: absent
+        - name: Second - Install apache fresh
+          yum:
+                name: httpd
+                state: present
+        - name: Create a file
+          file:
+                state: touch
+                path: /var/www/html/index.html
+        - name: Copy contents into index.html
+          copy:
+                content: "This page is creatd using yaml"
+                dest: /var/www/html/index.html
+        - name: Add 80/tcp and http to the list of services in firewall
+          firewalld:
+                port: 80/tcp
+                state: enabled
+                permanent: yes
+        - name: Add services in firewall
+          firewalld:
+                service: http
+                state: enabled
+                permanent: yes
+        - name: Reload Firewalld service
+          service:
+                name: firewalld
+                state: reloaded
+        - name: Restart Apache
+          service:
+                name: httpd
+                state: restarted
+
+

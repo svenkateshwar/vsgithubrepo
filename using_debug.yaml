@@ -1,0 +1,16 @@
+---
+
+- hosts: local
+  connection: ssh
+  become: yes
+  remote_user: ansible
+  vars:
+        motd_value: "{{ lookup('file','/tmp/abc.txt') }}"
+  tasks:
+        - name: Copy contents of motd_value into /etc/motd
+          copy:
+                content: "{{ motd_value }}"
+                dest: /etc/motd
+        - debug:
+                msg: "motd value is {{ motd_value }}"
+

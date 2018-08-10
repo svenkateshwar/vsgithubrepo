@@ -1,0 +1,17 @@
+--- # My first yaml file
+
+ - hosts: 
+        vsnode1.chennai.com
+        vsnode2.chennai.com
+   remote_user: ansible
+   become: yes
+   tasks:
+        - name: 
+          yum: 
+                name: httpd
+                state: latest
+        - name: Second task -starting service
+          service:
+                name: httpd
+                state: stopped
+

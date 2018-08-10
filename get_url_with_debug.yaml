@@ -1,0 +1,33 @@
+---
+
+- hosts: local
+  become: yes
+  remote_user: ansible
+  vars:
+        time_one: 20
+        time_revised: 60
+
+  tasks:
+        - block:
+                - name: Testing GET_URL Module. POLL will check every n seconds and ASYNC is the total time allocated for activity
+                  get_url:
+                       ## Big file URL : url: https://speed.hetzner.de/10GB.bin
+                        url : http://212.183.159.230/10MB.zip
+                        dest: /tmp
+                  async: "{{ time_one }}"
+                  poll: 5
+        
+          rescue:
+                - name: Giving additional window since the old time of 20 seconds failed
+                  get_url:
+                        url: http://212.183.159.230/10MB.zip
+                        dest: /tmp
+                  async: "{{ time_revised }}"
+                  poll: 5
+                  
+                - debug:
+                        msg: "Additional window completed"
+
+          always:
+                - debug: 
+                        msg: "System Output"
