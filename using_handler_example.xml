@@ -1,0 +1,18 @@
+--- # YAML to use handler
+
+- hosts: client
+  vars:
+  remote_user: ansible
+  become: yes
+  tasks:
+        - name: Confirm if the user venkat1 is present
+          user:
+                name: venkat1
+                state: absent
+          notify: test_notif
+
+  handlers:
+        - name: test_notif
+          service:
+                name: httpd
+                state: stopped
