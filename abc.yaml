@@ -2,9 +2,9 @@
  - hosts: client
    tasks:
         - name: Test
-          file:
+           file:
                 state: touch
                 dest: /var/tmp/123
-          copy:
+           copy:
                 content: "Changed YAML for Ansible tower"
                 dest: /var/tmp/123
