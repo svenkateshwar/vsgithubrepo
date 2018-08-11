@@ -1,2 +1,10 @@
 --- # First file in github
- - hosts: all
+ - hosts: client
+   tasks:
+        - name: Test
+          file:
+                state: touch
+                dest: /var/tmp/123
+          copy:
+                content: "Changed YAML for Ansible tower"
+                dest: /var/tmp/123
